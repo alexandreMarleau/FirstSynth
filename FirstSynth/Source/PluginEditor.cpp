@@ -17,15 +17,13 @@ FirstSynthAudioProcessorEditor::FirstSynthAudioProcessorEditor (FirstSynthAudioP
 {
     initOsc();
 
-
     button.setTitle(juce::String("button"));
     button.setColour(1, juce::Colours::aqua);
     button.setButtonText("Add Osc");
     button.onClick = [this] { updateToggleState(&button, "Male");   };
     addAndMakeVisible(button);
 
-
-    setSize (400, 300);
+    setSize (500, 400);
 
     addAndMakeVisible(adsr);
     addAndMakeVisible(button);
@@ -48,20 +46,14 @@ void FirstSynthAudioProcessorEditor::resized()
     const auto oscWidth = 400;
     const auto oscHeight = 300;
 
-    /*OscComponent *newosc = oscComponentArrays.getLast();
-    newosc->setBounds(0, 0, 200, 50);*/
-
-   // oscComponentVector[0].setBounds(0, 0, 200, 40);
-    for (auto osc : oscComponentArrays)
-        osc->setBounds(0, 0, 200, 40);
-
+ 
     for (int i = 0; i < oscComponentArrays.size(); i++) 
     {
         int y = 0;
         if (i > 0)
             y = oscComponentArrays[i - 1]->getY() + oscComponentArrays[i - 1]->getHeight();
 
-        oscComponentArrays[i]->setBounds(0, y, 200, 40);
+        oscComponentArrays[i]->setBounds(0, y, 200, 75);
     }
 
     adsr.setBounds(getWidth() / 2, 0, getWidth() / 2, getWidth());
@@ -72,9 +64,8 @@ void FirstSynthAudioProcessorEditor::resized()
 void FirstSynthAudioProcessorEditor::updateToggleState(juce::Button* button, juce::String name)
 {
     for (int i = 0; i < audioProcessor.Synth.getNumVoices(); i++)
-    {
         dynamic_cast<SynthVoice*>(audioProcessor.Synth.getVoice(i))->addOsc(new OscData());
-    }
+    
     audioProcessor.prepareToPlay(44100, 441);
     auto state = button->getToggleState();
 

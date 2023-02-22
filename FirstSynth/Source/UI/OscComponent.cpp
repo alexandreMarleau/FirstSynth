@@ -23,7 +23,7 @@ OscComponent::OscComponent(juce::AudioProcessorValueTreeState& apvts, std::strin
 
 
     oscGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, gainId, gainOscSlider);
-    setSliderParams(gainOscSlider);
+    setSliderParams(gainOscSlider, gainOscLabel);
 }
 
 OscComponent::~OscComponent()
@@ -37,13 +37,24 @@ void OscComponent::paint (juce::Graphics& g)
 
 void OscComponent::resized()
 {
-    oscWaveSelector.setBounds(0, 0, 100, 30);
-    gainOscSlider.setBounds(oscWaveSelector.getWidth() + 10, 0, 100, 50);
+    setSize(250, 100);
+
+    oscWaveSelector.setBounds(0, getHeight() / 2 - 15, 100, 30);
+    gainOscSlider.setBounds(oscWaveSelector.getWidth() + 10, 0, 75, 75);
 }
 
-void OscComponent::setSliderParams(juce::Slider& slider)
+void OscComponent::setSliderParams(juce::Slider& slider, juce::Label& label)
 {
     slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
     addAndMakeVisible(slider);
+
+    label.attachToComponent(&slider, false); // [4]
+    juce::Font myFont = juce::Font(17.0f, juce::Font::bold);
+    myFont.setTypefaceName("Arial");
+    label.setFont(myFont);
+    label.setColour(juce::Label::textColourId, juce::Colours::white);
+    label.setText("Gain", juce::dontSendNotification);
+    addAndMakeVisible(label);
+
 }

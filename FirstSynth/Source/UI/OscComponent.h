@@ -25,10 +25,12 @@ public:
     void resized() override;
 
 private:
-    void setSliderParams(juce::Slider& slider);
+    void setSliderParams(juce::Slider& slider, juce::Label& label);
 
     juce::ComboBox oscWaveSelector;
     juce::Slider gainOscSlider;
+    juce::Label gainOscLabel;
+
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> oscSelAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> oscGainAttachment;
