@@ -23,7 +23,7 @@ FirstSynthAudioProcessorEditor::FirstSynthAudioProcessorEditor (FirstSynthAudioP
     button.onClick = [this] { updateToggleState(&button, "Male");   };
     addAndMakeVisible(button);
 
-    setSize (500, 400);
+    setSize (800, 700);
 
     addAndMakeVisible(adsr);
     addAndMakeVisible(button);
@@ -43,7 +43,7 @@ void FirstSynthAudioProcessorEditor::paint (juce::Graphics& g)
 void FirstSynthAudioProcessorEditor::resized()
 {
 
-    const auto oscWidth = 400;
+    const auto oscWidth = 500;
     const auto oscHeight = 300;
 
  
@@ -81,7 +81,7 @@ void FirstSynthAudioProcessorEditor::initOsc()
 
     for (int i = 0; i < dynamic_cast<SynthVoice*>(audioProcessor.Synth.getVoice(0))->getOscSize(); i++)
     {
-        OscComponent* oscComp = new OscComponent(audioProcessor.apvts, "OSC" + std::to_string(i + 1), "GAINOSC" + std::to_string(i + 1));
+        OscComponent* oscComp = new OscComponent(audioProcessor.apvts, i);
         oscComponentArrays.add(oscComp);
         addAndMakeVisible(oscComp);
     }

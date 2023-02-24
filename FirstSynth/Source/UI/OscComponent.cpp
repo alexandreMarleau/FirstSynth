@@ -12,18 +12,22 @@
 #include "OscComponent.h"
 
 //==============================================================================
-OscComponent::OscComponent(juce::AudioProcessorValueTreeState& apvts, std::string oscId, std::string gainId)
+OscComponent::OscComponent(juce::AudioProcessorValueTreeState& apvts, int oscId)
 {
     juce::StringArray waveChoices{ "Sine", "Saw", "Square", "Custom"};
     oscWaveSelector.addItemList(waveChoices, 1);
     oscWaveSelector.setSelectedItemIndex(0);
      
-    oscSelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(apvts, oscId, oscWaveSelector);
+    oscSelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(apvts, "OSC" + std::to_string(oscId + 1), oscWaveSelector);
     addAndMakeVisible(oscWaveSelector);
 
 
-    oscGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, gainId, gainOscSlider);
+    oscGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, "GAINOSC" + std::to_string(oscId + 1), gainOscSlider);
     setSliderParams(gainOscSlider, gainOscLabel);
+
+    octaveAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, "OCTAVE" + std::to_string(oscId + 1), octaveSlider);
+    addAndMakeVisible(octaveSlider);
+
 }
 
 OscComponent::~OscComponent()
@@ -37,10 +41,11 @@ void OscComponent::paint (juce::Graphics& g)
 
 void OscComponent::resized()
 {
-    setSize(250, 100);
+    setSize(500, 100);
 
     oscWaveSelector.setBounds(0, getHeight() / 2 - 15, 100, 30);
     gainOscSlider.setBounds(oscWaveSelector.getWidth() + 10, 0, 75, 75);
+    octaveSlider.setBounds(gainOscSlider.getX() + gainOscSlider.getWidth() + 10, 0, 75, 75);
 }
 
 void OscComponent::setSliderParams(juce::Slider& slider, juce::Label& label)

@@ -18,7 +18,7 @@
 class OscComponent  : public juce::Component
 {
 public:
-    OscComponent(juce::AudioProcessorValueTreeState& apvts, std::string Id, std::string gainId);
+    OscComponent(juce::AudioProcessorValueTreeState& apvts, int oscId);
     ~OscComponent() override;
 
     void paint (juce::Graphics&) override;
@@ -30,10 +30,13 @@ private:
     juce::ComboBox oscWaveSelector;
     juce::Slider gainOscSlider;
     juce::Label gainOscLabel;
+    juce::Slider octaveSlider;
 
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> oscSelAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> oscGainAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> octaveAttachment;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscComponent)
 };

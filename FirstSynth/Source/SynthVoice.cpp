@@ -16,14 +16,11 @@ bool SynthVoice::canPlaySound(juce::SynthesiserSound* sound)
 }
 void SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) 
 {
-
     for (auto osc : oscArrays)
         osc->setWaveFrequency(midiNoteNumber);
 
     //osc1.setWaveFrequency(midiNoteNumber);
     adsrData.noteOn();
-
-
 }
 void SynthVoice::stopNote(float velocity, bool allowTailOff) 
 {
@@ -61,6 +58,10 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplePerBlock, int output
 void SynthVoice::update(const float attack, const float decay, const float sustain, const float release) 
 {
     adsrData.updateADSR(attack,  decay,  sustain, release);
+}
+void SynthVoice::setApvts(juce::AudioProcessorValueTreeState* apvtsTemp)
+{
+    apvts = apvtsTemp;
 }
 void SynthVoice::renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples)
 {

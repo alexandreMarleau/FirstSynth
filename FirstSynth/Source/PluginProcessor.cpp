@@ -27,7 +27,9 @@ FirstSynthAudioProcessor::FirstSynthAudioProcessor()
 {
     for (auto i = 0; i < 6; i++)
     {
-        Synth.addVoice(new SynthVoice());
+        SynthVoice* synthVoice = new SynthVoice();
+        synthVoice->setApvts(&apvts);
+        Synth.addVoice(synthVoice);
     }
     Synth.addSound(new SynthSound());
 
@@ -171,10 +173,6 @@ void FirstSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
             auto& sustain = *apvts.getRawParameterValue("SUSTAIN");
             auto& release = *apvts.getRawParameterValue("RELEASE");
 
-
-            auto& oscWaveChoice1 = *apvts.getRawParameterValue("OSC1" );
-            auto& gainOsc1 = *apvts.getRawParameterValue("GAINOSC1");
-
             // Load car de sont des atomic float. on va chercher le float directe.
             voice->update(attack.load(), decay.load(), sustain.load(), release.load());
 
@@ -184,17 +182,14 @@ void FirstSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
                 int id = i + 1;
                 auto& oscWaveChoice = *apvts.getRawParameterValue("OSC" + std::to_string(id));
                 auto& gainOsc = *apvts.getRawParameterValue("GAINOSC" + std::to_string(id));
+                auto& octave = *apvts.getRawParameterValue("OCTAVE" + std::to_string(id));
 
+                
+                int noteNumber = osc->noteNumber;
+                osc->setFrequency(juce::MidiMessage::getMidiNoteInHertz(noteNumber + octave));
                 osc->setWaveType(oscWaveChoice);
                 osc->setGain(gainOsc);
             }
-
-            /*voice->getOscillator1().setWaveType(oscWaveChoice1);
-            voice->getOscillator1().setGain(gainOsc1);*/
-
-
-
-            // LFO
         }
     }
     Synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
@@ -242,6 +237,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout FirstSynthAudioProcessor::cr
     {
         params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC"+ std::to_string(i), "Oscillator" + std::to_string(i), juce::StringArray{ "Sine","Saw","Square", "Custom" }, 0));
         params.push_back(std::make_unique<juce::AudioParameterFloat>("GAINOSC" + std::to_string(i), "GainOsc" + std::to_string(i), juce::NormalisableRange<float> {0.f, 0.1f}, 0.07f));
+        params.push_back(std::make_unique<juce::AudioParameterInt>("OCTAVE" + std::to_string(i), "Octave" + std::to_string(i), -36, 36, 0));
 
     }
    /* params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC1", "Oscillator1", juce::StringArray{"Sine","Saw","Square", "Custom"}, 0));

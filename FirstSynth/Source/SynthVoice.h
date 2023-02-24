@@ -30,11 +30,14 @@ public:
     OscData* getOsc(const int index) { return oscArrays[index]; };
     const int getOscSize() { return oscArrays.size(); };
     void addOsc(OscData* oscData) { oscArrays.add(oscData); };
+    void setApvts(juce::AudioProcessorValueTreeState* apvts);
 
 private:
     AdsrData adsrData;
 
     juce::AudioBuffer<float> synthBuffer;
+    juce::AudioProcessorValueTreeState* apvts;
+
 
     //juce::dsp::Oscillator<float> osc{ [](float x) {return std::sin(x)  + (x / juce::MathConstants<float>::pi ); } };
     juce::dsp::Gain<float> masterGain;

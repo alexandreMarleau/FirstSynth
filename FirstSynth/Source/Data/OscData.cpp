@@ -30,7 +30,8 @@ void OscData::setWaveType(const int choice)/* il fuadrait plutot créer une enum 
         break;
     case 3:
         //initialise([](float x) {return std::sin(x) * (x / juce::MathConstants<float>::pi); });
-        initialise([](float x) {return std::sin(x) * std::sin(x*5)*4; });
+        //initialise([](float x) {return std::sin(x) * std::sin(x*5)*4; });
+        initialise([](float x) {return std::sin(juce::MathConstants<float>::pi * x) + (4 / juce::MathConstants<float>::pi) * (1 / 5) * std::sin(5*juce::MathConstants<float>::pi*x);});
 
         break;
         //square wave
@@ -56,6 +57,12 @@ void OscData::getNextAudioBlock(juce::dsp::ProcessContextReplacing<float>(audioB
 void OscData::setWaveFrequency(const int midiNoteNumber)
 {
     setFrequency(juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber));
+    noteNumber = midiNoteNumber;
+}
+
+void OscData::getNoteNumber()
+{
+    float noteInHertz = getFrequency();
 }
 
 void OscData::setGain(const float levelInDecibels)
