@@ -235,25 +235,17 @@ juce::AudioProcessorValueTreeState::ParameterLayout FirstSynthAudioProcessor::cr
 
     for (int i = 1; i < 20; i++)
     {
-        params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC"+ std::to_string(i), "Oscillator" + std::to_string(i), juce::StringArray{ "Sine","Saw","Square", "Custom" }, 0));
+        params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC"+ std::to_string(i), "Oscillator" + std::to_string(i), juce::StringArray{ "Sine","Saw","Square", "Triangle","Custom" }, 0));
         params.push_back(std::make_unique<juce::AudioParameterFloat>("GAINOSC" + std::to_string(i), "GainOsc" + std::to_string(i), juce::NormalisableRange<float> {0.f, 0.1f}, 0.07f));
         params.push_back(std::make_unique<juce::AudioParameterInt>("OCTAVE" + std::to_string(i), "Octave" + std::to_string(i), -36, 36, 0));
 
     }
-   /* params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC1", "Oscillator1", juce::StringArray{"Sine","Saw","Square", "Custom"}, 0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("GAINOSC1", "GainOsc1", juce::NormalisableRange<float> {0.f, 0.1f}, 0.07f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("GAINOSC2", "GainOsc2", juce::NormalisableRange<float> {0.f, 0.1f}, 0.07f));
-    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC2", "Oscillator2", juce::StringArray{ "Sine","Saw","Square", "Custom" }, 0));*/
-
-
-
 
     //ADSR
     params.push_back(std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", juce::NormalisableRange<float> {0.f, 1.0f}, 0.1f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", juce::NormalisableRange<float> {0.f, 1.0f}, 0.1f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", juce::NormalisableRange<float> {0.f, 1.0f}, 1.0f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", juce::NormalisableRange<float> {0.f, 1.0f}, 0.4f));
-
 
     return 
     { params.begin(),params.end()};

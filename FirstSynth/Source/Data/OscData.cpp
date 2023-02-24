@@ -18,7 +18,7 @@ void OscData::setWaveType(const int choice)/* il fuadrait plutot créer une enum 
     switch (choice)
     {
     case 0:
-        //SineWave
+        //Sine wave
         initialise([](float x) {return std::sin(x);});
             break;
     case 1: 
@@ -26,15 +26,20 @@ void OscData::setWaveType(const int choice)/* il fuadrait plutot créer une enum 
         initialise([](float x) {return x / juce::MathConstants<float>::pi; });
         break;
     case 2:
+        //Square wave
         initialise([](float x) {return x < 0.0f ? -1.0f : 1.0f;});
         break;
     case 3:
+        //Triangle wave
+       
+        initialise([](float x) {return std::acos(std::sin(x));});
+
+        break;
+    case 4:
         //initialise([](float x) {return std::sin(x) * (x / juce::MathConstants<float>::pi); });
         //initialise([](float x) {return std::sin(x) * std::sin(x*5)*4; });
         initialise([](float x) {return std::sin(juce::MathConstants<float>::pi * x) + (4 / juce::MathConstants<float>::pi) * (1 / 5) * std::sin(5*juce::MathConstants<float>::pi*x);});
 
-        break;
-        //square wave
     default:
         jassertfalse; // On est pas supposer être ici.
         break;

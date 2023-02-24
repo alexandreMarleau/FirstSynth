@@ -14,7 +14,7 @@
 //==============================================================================
 OscComponent::OscComponent(juce::AudioProcessorValueTreeState& apvts, int oscId)
 {
-    juce::StringArray waveChoices{ "Sine", "Saw", "Square", "Custom"};
+    juce::StringArray waveChoices{ "Sine", "Saw", "Square", "Triangle","Custom"};
     oscWaveSelector.addItemList(waveChoices, 1);
     oscWaveSelector.setSelectedItemIndex(0);
      
