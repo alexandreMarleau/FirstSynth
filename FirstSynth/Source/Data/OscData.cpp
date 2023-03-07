@@ -10,43 +10,60 @@
 
 #include "OscData.h"
 
-void OscData::setWaveType(const int choice, const float modifier)/* il fuadrait plutot créer une enum avec les choix plutard*/
+void OscData::setWaveType(const int choice, const float modifier, std::function<NumericType(NumericType)> modulatingWave)/* il fuadrait plutot créer une enum avec les choix plutard*/
 {
     //return std::sin(x); //SineWave
     //return x / juce::MathConstants<float>::pi;
-
+    std::function<float(float)> fn1 = [](float x) {return  std::sin(1 * x);};
     switch (choice)
     {
-    case 0:
-        //Sine wave
-        initialise([](float x) {return std::sin(x);});
-            break;
-    case 1: 
-        //saw wave
-        initialise([](float x) {return x / juce::MathConstants<float>::pi; });
+    case 0://Sine wave
+    {
+        std::function<float(float x)> wave = [](float x) { return std::sin(x); };
+        initialise(wave);
+        generator = (wave);
         break;
-    case 2:
-        //Square wave
-        initialise([](float x) {return x < 0.0f ? -1.0f : 1.0f;});
-        break;
-    case 3:
-        //Triangle wave
-       
-        initialise([](float x) {return std::acos(std::sin(x));});
+    }
 
+    case 1: //saw wave
+    {
+        std::function<float(float x)> wave = [](float x) {return x / juce::MathConstants<float>::pi; };
+        initialise(wave);
+        generator = (wave);
         break;
+    }
+
+    case 2:// Square Wave
+    {
+        std::function<float(float x)> wave = [](float x) {return x < 0.0f ? -1.0f : 1.0f;};
+        initialise(wave);
+        generator = (wave);
+        break;
+    }
+
+    case 3://Triangle wave
+    {
+        std::function<float(float x)> wave = [](float x) {return std::acos(std::sin(x));};
+        initialise(wave);
+        generator = (wave);
+        break;
+    }
+
     case 4:
+    {
         //initialise([](float x) {return std::sin(x) * (x / juce::MathConstants<float>::pi); });
         //initialise([](float x) {return std::sin(x) * std::sin(x*5)*4; });
         //initialise([](float x) {return std::sin(juce::MathConstants<float>::pi * x) + (4 / juce::MathConstants<float>::pi) * (1 / 5) * std::sin(5*juce::MathConstants<float>::pi*x);});
-       
+
         //initialise([modifier](float x) {return std::sin(x) * std::sin(modifier *x ) * 4; });
 
-        //initialise([modifier](float x) {return std::sin(2 * x + 1.5*std::sin(2*2*x)) ;});
-        initialise([modifier](float x) {return std::sin(1 * x +  modifier * std::sin( 1 * x));});
-
-
+        //std::function<float(float x)> wave = [modifier](float x) {return std::sin(1 * x + modifier * std::sin(1 * x));};
+        std::function<float(float x)> wave = [modifier, modulatingWave](float x) {return std::sin(1 * x + modifier * modulatingWave(x));};
+        initialise(wave);
+        generator = (wave);
         break;
+    }
+
     default:
         jassertfalse; // On est pas supposer être ici.
         break;
@@ -55,8 +72,6 @@ void OscData::setWaveType(const int choice, const float modifier)/* il fuadrait 
 
 void OscData::prepareToPlay(juce::dsp::ProcessSpec spec)
 {
-   /* fmOsc.prepare(spec);
-    fmOsc.initialise([](float x) {return std::sin(x);});*/
     prepare(spec);
     gain.prepare(spec);
 }

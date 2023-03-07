@@ -179,6 +179,11 @@ void FirstSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
             for (int i = 0; i < voice->getOscSize(); i++)
             {
                 auto* osc = voice->getOsc(i);
+                
+                std::function<float(float)> fm = nullptr;
+                if (i > 0)
+                    fm = voice->getOsc(i - 1)->generator;
+
                 int id = i + 1;
                 auto& oscWaveChoice = *apvts.getRawParameterValue("OSC" + std::to_string(id));
                 auto& gainOsc = *apvts.getRawParameterValue("GAINOSC" + std::to_string(id));
@@ -187,8 +192,9 @@ void FirstSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
 
                 int noteNumber = osc->noteNumber;
                 osc->setFrequency(juce::MidiMessage::getMidiNoteInHertz(noteNumber + octave));
-                osc->setWaveType(oscWaveChoice, modifier);
+                osc->setWaveType(oscWaveChoice, modifier, fm);
                 osc->setGain(gainOsc);
+
             }
         }
     }
