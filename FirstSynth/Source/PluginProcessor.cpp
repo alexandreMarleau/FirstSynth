@@ -185,9 +185,6 @@ void FirstSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
                 auto& octave = *apvts.getRawParameterValue("OCTAVE" + std::to_string(id));
                 auto& modifier = *apvts.getRawParameterValue("MODIFIER" + std::to_string(id));
 
-
-
-                
                 int noteNumber = osc->noteNumber;
                 osc->setFrequency(juce::MidiMessage::getMidiNoteInHertz(noteNumber + octave));
                 osc->setWaveType(oscWaveChoice, modifier);

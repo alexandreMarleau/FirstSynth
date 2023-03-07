@@ -20,8 +20,6 @@ public:
     void setGain(const float levelInDecibels);
     void OscData::getNoteNumber();
     int noteNumber;
-    void processFmMod(juce::dsp::AudioBlock<float>& audioBlock);
-
 
 private:
     juce::dsp::Gain<float> gain;

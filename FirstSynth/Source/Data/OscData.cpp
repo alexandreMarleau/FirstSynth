@@ -65,8 +65,6 @@ void OscData::getNextAudioBlock(juce::dsp::AudioBlock<float>& audioBlock)
 {
 
     process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
-    processFmMod(audioBlock);
-
 
     gain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
 
@@ -89,24 +87,3 @@ void OscData::setGain(const float levelInDecibels)
 {
     gain.setGainLinear(levelInDecibels);
 }
-
-void OscData::processFmMod(juce::dsp::AudioBlock<float>& audioBlock)
-{
-    for (int ch = 0; ch < audioBlock.getNumChannels(); ++ch)
-    {
-        for (int s = 0; s < audioBlock.getNumSamples(); ++s)
-        {
-           // audioBlock.setSample(ch,s, audioBlock.getSample(ch, s) + std::sin(std::asin(audioBlock.getSample(ch, s)*0)    ) );
-            float x = std::asin(audioBlock.getSample(ch, s));
-            float r = audioBlock.getSample(ch, s);
-            //audioBlock.setSample(ch, s, std::sin(std::cos(x*4)*x));
-            //audioBlock.setSample(ch, s, audioBlock.getSample(ch, s));
-           // fmOsc.processSample(audioBlock.getSample(ch, s));
-            float v = audioBlock.getSample(ch, s);
-
-
-        }
-    }
-
-}
-
