@@ -10,11 +10,11 @@
 
 #include "OscData.h"
 
-void OscData::setWaveType(const int choice, const float modifier, std::function<NumericType(NumericType)> modulatingWave)/* il fuadrait plutot créer une enum avec les choix plutard*/
+void OscData::setWaveType(const int choice, const float modifier, const float offset,
+                          std::function<NumericType(NumericType)> modulatingWave)/* il fuadrait plutot créer une enum avec les choix plutard*/
 {
     //return std::sin(x); //SineWave
     //return x / juce::MathConstants<float>::pi;
-    std::function<float(float)> fn1 = [](float x) {return  std::sin(1 * x);};
     switch (choice)
     {
     case 0://Sine wave
@@ -58,7 +58,7 @@ void OscData::setWaveType(const int choice, const float modifier, std::function<
         //initialise([modifier](float x) {return std::sin(x) * std::sin(modifier *x ) * 4; });
 
         //std::function<float(float x)> wave = [modifier](float x) {return std::sin(1 * x + modifier * std::sin(1 * x));};
-        std::function<float(float x)> wave = [modifier, modulatingWave](float x) {return std::sin(1 * x + modifier * modulatingWave(x));};
+        std::function<float(float x)> wave = [modifier, offset, modulatingWave](float x) {return std::sin(1 * x + offset + modifier * modulatingWave(x));};
         initialise(wave);
         generator = (wave);
         break;

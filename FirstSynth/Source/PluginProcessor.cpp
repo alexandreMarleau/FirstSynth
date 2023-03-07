@@ -189,10 +189,12 @@ void FirstSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
                 auto& gainOsc = *apvts.getRawParameterValue("GAINOSC" + std::to_string(id));
                 auto& octave = *apvts.getRawParameterValue("OCTAVE" + std::to_string(id));
                 auto& modifier = *apvts.getRawParameterValue("MODIFIER" + std::to_string(id));
+                auto& offset = *apvts.getRawParameterValue("OFFSET" + std::to_string(id));
+
 
                 int noteNumber = osc->noteNumber;
                 osc->setFrequency(juce::MidiMessage::getMidiNoteInHertz(noteNumber + octave));
-                osc->setWaveType(oscWaveChoice, modifier, fm);
+                osc->setWaveType(oscWaveChoice, modifier, offset,  fm);
                 osc->setGain(gainOsc);
 
             }
@@ -247,6 +249,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout FirstSynthAudioProcessor::cr
 
         //Modifiers
         params.push_back(std::make_unique<juce::AudioParameterFloat>("MODIFIER" + std::to_string(i), "Modifier" + std::to_string(i), juce::NormalisableRange<float> {0.0f, 40.0f}, 0.0f));
+        params.push_back(std::make_unique<juce::AudioParameterFloat>("OFFSET" + std::to_string(i), "Offset" + std::to_string(i), juce::NormalisableRange<float> {-10.0f, 10.0f}, 0.0f));
 
     }
 
