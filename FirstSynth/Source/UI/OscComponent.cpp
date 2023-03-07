@@ -28,6 +28,10 @@ OscComponent::OscComponent(juce::AudioProcessorValueTreeState& apvts, int oscId)
     octaveAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, "OCTAVE" + std::to_string(oscId + 1), octaveSlider);
     addAndMakeVisible(octaveSlider);
 
+    // Modifiers
+    modifierAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, "MODIFIER" + std::to_string(oscId + 1), modifierSlider);
+    setSliderParams(modifierSlider, modifierLabel);
+
 }
 
 OscComponent::~OscComponent()
@@ -46,6 +50,8 @@ void OscComponent::resized()
     oscWaveSelector.setBounds(0, getHeight() / 2 - 15, 100, 30);
     gainOscSlider.setBounds(oscWaveSelector.getWidth() + 10, 0, 75, 75);
     octaveSlider.setBounds(gainOscSlider.getX() + gainOscSlider.getWidth() + 10, 0, 75, 75);
+    modifierSlider.setBounds(octaveSlider.getX() + octaveSlider.getWidth() + 10, 0, 75, 75);
+
 }
 
 void OscComponent::setSliderParams(juce::Slider& slider, juce::Label& label)

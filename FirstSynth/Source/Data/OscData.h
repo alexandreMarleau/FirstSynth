@@ -13,15 +13,17 @@
 class OscData : public juce::dsp::Oscillator<float>
 {
 public:
-    void setWaveType(const int choice);
+    void setWaveType(const int choice, const float modifier);
     void prepareToPlay(juce::dsp::ProcessSpec spec);
-    void getNextAudioBlock(juce::dsp::ProcessContextReplacing<float>(audioBlock));
+    void getNextAudioBlock(juce::dsp::AudioBlock<float>& audioBlock);
     void setWaveFrequency(const int midiNoteNumber);
     void setGain(const float levelInDecibels);
     void OscData::getNoteNumber();
     int noteNumber;
+    void processFmMod(juce::dsp::AudioBlock<float>& audioBlock);
 
 
 private:
     juce::dsp::Gain<float> gain;
+    juce::dsp::Oscillator<float> fmOsc;
 };

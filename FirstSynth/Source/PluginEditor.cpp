@@ -56,8 +56,8 @@ void FirstSynthAudioProcessorEditor::resized()
         oscComponentArrays[i]->setBounds(0, y, 200, 75);
     }
 
-    adsr.setBounds(getWidth() / 2, 0, getWidth() / 2, getWidth());
-    button.setBounds(0, oscComponentArrays.getLast()->getY() + oscComponentArrays.getLast()->getHeight(), 100, 30);
+    //adsr.setBounds(getWidth() / 2, 0, getWidth() / 2, getWidth());
+    button.setBounds(0, oscComponentArrays.getLast()->getY() + oscComponentArrays.getLast()->getHeight(), 400, 30);
 
 }
 

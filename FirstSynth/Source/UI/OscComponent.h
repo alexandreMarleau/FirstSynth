@@ -31,12 +31,14 @@ private:
     juce::Slider gainOscSlider;
     juce::Label gainOscLabel;
     juce::Slider octaveSlider;
+    juce::Slider modifierSlider;
+    juce::Label modifierLabel;
 
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> oscSelAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> oscGainAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> octaveAttachment;
-
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> modifierAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscComponent)
 };
